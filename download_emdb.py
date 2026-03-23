@@ -301,14 +301,14 @@ def download_one(
                     header = fh.read(4)
 
                 if header != ZIP_MAGIC:
-                    logger.warning(
-                        "Invalid ZIP magic bytes for item %03d year %d (got %r) — not saving.",
+                    logger.debug(
+                        "No data for item %03d year %d (got %r instead of ZIP) — skipping.",
                         item_code,
                         fiscal_year,
                         header,
                     )
                     tmp_path.unlink(missing_ok=True)
-                    return "failed"
+                    return "skipped"
 
                 os.replace(tmp_path, output_path)
 

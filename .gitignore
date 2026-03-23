@@ -1,0 +1,8 @@
+dataset/
+download_state.json
+download.log
+__pycache__/
+*.pyc
+.DS_Store
+venv/
+item_info.json

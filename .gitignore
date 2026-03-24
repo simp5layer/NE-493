@@ -6,3 +6,6 @@ __pycache__/
 .DS_Store
 venv/
 item_info.json
+filter.log
+output/
+Samples/

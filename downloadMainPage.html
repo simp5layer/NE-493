@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
+    <title>
+      Download by Year | Database for Radioactive Substance Monitoring Data
+    </title>
+    <link rel="icon" href="/emdb/static/img/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/emdb/static/lib/bootstrap-5.3.3-dist/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/emdb/static/lib/jquery-ui-1.14.0/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="/emdb/static/lib/fontawesome-free-6.6.0-web/css/all.min.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/emdb/static/css/daterangepicker.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/emdb/static/css/styles.min.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/emdb/static/lib/DataTables-2.1.7/dataTables.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="/emdb/static/lib/DataTables-2.1.7/Select-2.1.0/css/select.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="/emdb/static/lib/DataTables-2.1.7/Buttons-3.1.2/css/buttons.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="/emdb/static/lib/DataTables-2.1.7/SearchBuilder-1.8.0/css/searchBuilder.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="/emdb/static/lib/DataTables-2.1.7/SearchPanes-2.3.2/css/searchPanes.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="/emdb/static/css/common1.css" />
+    <link rel="stylesheet" type="text/css" href="/emdb/static/css/jtable_override.css" />
+    <style>
+      #table1_wrapper .dt-buttons,
+  #table1_length,
+  #table1_filter {
+    margin-bottom: 1rem;
+  }
+
+  @media only screen and (max-width:640px) {
+
+    #table1_wrapper .dt-buttons,
+    #table1_length,
+    #table1_filter {
+      text-align: right;
+      padding-right: 1rem;
+    }
+  }
+    </style>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-93B7H3FLD3">
+    </script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag(&#39;js&#39;, new Date());
+
+    gtag(&#39;config&#39;, &#39;G-00VVF7Z34W&#39;);
+    </script>
+    <script src="/emdb/static/lib/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js">
+    </script>
+    <script src="/emdb/static/lib/jquery-3.7.1/jquery-3.7.1.min.js">
+    </script>
+    <script src="/emdb/static/js/common.js">
+    </script>
+    <script src="/emdb/static/js/base.js">
+    </script>
+    <script src="/emdb/static/js/main.js">
+    </script>
+    <!-- <script src="/emdb/static/lib/moment.min.js"></script> -->
+    <!-- <script src="/emdb/static/js/libs.min.js"></script>
+  <script src="/emdb/static/js/main.js"></script> -->
+    <script src="/emdb/static/lib/DataTables-2.1.7/dataTables.min.js">
+    </script>
+    <script src="/emdb/static/lib/DataTables-2.1.7/Select-2.1.0/js/dataTables.select.min.js">
+    </script>
+    <script src="/emdb/static/lib/DataTables-2.1.7/Buttons-3.1.2/js/dataTables.buttons.min.js">
+    </script>
+    <script src="/emdb/static/lib/DataTables-2.1.7/SearchBuilder-1.8.0/js/dataTables.searchBuilder.min.js">
+    </script>
+    <script src="/emdb/static/lib/DataTables-2.1.7/SearchPanes-2.3.2/js/dataTables.searchPanes.min.js">
+    </script>
+    <script src="/emdb/static/js/download.js">
+    </script>
+    <script>
+      var URL_EMDB_DOWNLOAD = &#34;/emdb/download&#34;;
+  var URL_EMDB_CONTENTS = &#34;/emdb/contents/0/&#34;;
+  var URL_DTJSON_ITEM_INFO = &#34;/emdb/dtjson/item_info&#34;;
+    </script>
+  </head>
+  <body class="h-100">
+    <div id="wrapper" class="d-flex flex-column h-100">
+      <!-- Header component-->
+      <!-- English Header -->
+      <div class="header">
+        <div class="header__top">
+          <div class="header__inner">
+            <div class="header__info">
+              <a class="header__radiation-logo" href="/en">              <img src="/emdb/static/img/en/radiation-logo.svg" alt="radiation logo" />
+              <!--换成英文的logo图标-->
+</a>
+              <div class="header__right">
+                <form method="POST" class="language-switcher-form">
+                  <input type="hidden" name="csrfmiddlewaretoken" value="c3ovnSJXpEPFnXk2Gky5Zyt1Gbv9Ycr9n23Sl6EvQkJqcsAk6hclLyG8oqwuJdGN" />
+                  <button type="submit" class="language-switcher" name="language" value="ja">
+                    <img class="language-switcher__flag" src="/emdb/static/img/icon-globe.svg" alt="" />
+                    <span class="language-switcher__name" data-lang="JA">                    日本語
+</span>
+                  </button>
+                </form>
+                <form action="https://www.google.com/search" method="get">
+                  <div class="searchform">
+                    <input class="searchform__input" name="q" type="text" placeholder="search" />
+                    <input type="hidden" name="hl" value="en" />
+                    <input type="hidden" name="gl" value="jp" />
+                    <input type="hidden" name="gws_rd" value="cr" />
+                    <input type="hidden" name="pws" value="0" />
+                    <input type="hidden" name="domains" value="radioactivity.nra.go.jp" />
+                    <input type="hidden" name="sitesearch" value="radioactivity.nra.go.jp" />
+                    <button class="searchform__btn" type="submit">
+                      <img src="/emdb/static/img/icon-search.svg" alt="search" />
+                    </button>
+                  </div>
+                </form>
+                <a class="pc-visible" href="https://www.nra.go.jp/english/">                <img src="/emdb/static/img/en/nuclear-power-logo.svg" alt="nuclear power logo" width="211" height="41" />
+</a>
+                <!-- href改成英文跳转的网址 img的src改成英文图标 -->
+                <button class="hamburger" type="button" aria-label="menu">
+                  <span class="hamburger__line"></span>
+                  <span class="hamburger__line"></span>
+                  <span class="hamburger__line"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="header__nav">
+          <div class="header__inner">
+            <nav class="header-nav">
+              <ul class="nav__list">
+                <li class="nav__item">
+                  <a class="nav__link" href="/en">                  Home
+</a>
+                </li>
+                <li class="nav__item">
+                  <a class="nav__link" href="/en/updates?page=1">                  Updates
+</a>
+                </li>
+                <li class="nav__item nav__item--has-child">
+                  <a class="nav__link">                  Monitoring Plan
+                  <span class="nav__arrow"></span>
+</a>
+                  <div class="sub-nav">
+                    <div class="sub-nav-container">
+                      <a href="/en/plan" class="sub-nav__title">                      Comprehensive Radiation
+                  Monitoring
+                  Plan
+</a>
+                      <div class="sub-nav__list-container">
+                        <ul class="sub-nav__list">
+                          <li class="sub-nav__item">
+                            <a href="/en/plan/summary" class="sub-nav__link">                            Summary
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a href="/en/plan/meetings" class="sub-nav__link">                            Meetings
+                        and
+                        Plans
+</a>
+                          </li>
+                        </ul>
+                        <a class="sub-nav__banner" href="/cont/en/plan/meetings/274_20240321.pdf" target="_blank" rel="noopener">                        <img src="/emdb/static/img/en/img-banner-01.svg" alt="" width="270" height="90" />
+</a>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="nav__item nav__item--has-child">
+                  <a class="nav__link">                  Database
+                  <span class="nav__arrow"></span>
+</a>
+                  <div class="sub-nav">
+                    <div class="sub-nav-container">
+                      <a class="sub-nav__title" href="/emdb/">                      Database
+</a>
+                      <div class="sub-nav__list-container">
+                        <ul class="sub-nav__list">
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link" href="/emdb/search">                            Search
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link" href="/emdb/download">                            Download
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link" href="/emdb/utilization">                            Let&#39;s Get Started
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link" href="/emdb/contact">                            Q&amp;A
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link" href="/emdb/terms">                            Miscellaneous
+</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="nav__item nav__item--has-child nav__item--result">
+                  <a class="nav__link">                  Monitoring
+              Results Archives
+                  <span class="nav__arrow"></span>
+</a>
+                  <div class="sub-nav">
+                    <div class="sub-nav-container">
+                      <a class="sub-nav__title" class="sub-nav__title" href="/en/results">                      Archives of Monitoring
+                  Results
+</a>
+                      <div class="sub-nav__list-container">
+                        <ul class="sub-nav__list">
+                          <a href="/en/results#sec-02" class="sub-nav__list-title js-anchor">                          <strong>                          Reading of Land
+                        Monitoring
+</strong>
+</a>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link js-anchor" href="/en/results#sec-03">                            Air
+                        dose rate
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link js-anchor" href="/en/results#sec-04">                            Integreted
+                        dose
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link js-anchor" href="/en/results#sec-05">                            Water
+                        Environment
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link js-anchor" href="/en/results#sec-06">                            Readings of dust, soil
+                        and
+                            <br />
+                            environmental
+                        sampling
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link js-anchor" href="/en/results#sec-07">                            Airborne
+                        monitoring
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link js-anchor" href="/en/results#sec-08">                            Monitoring by
+                        prefecture
+</a>
+                          </li>
+                        </ul>
+                        <ul class="sub-nav__list">
+                          <a class="sub-nav__list-title js-anchor" href="/en/results#sec-09">                          <strong>                          Readings of Sea Area Monitoring
+</strong>
+</a>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link js-anchor" href="/en/results#sec-10">                            ALPS
+                        Treated Water Marine Monitoring
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link js-anchor" href="/en/results#sec-12">                            Monitoring of sea
+                        water
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link js-anchor" href="/en/results#sec-18">                            Monitoring of
+                        marine soil
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link js-anchor" href="/en/results#sec-22">                            Monitoring of biota
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link js-anchor" href="/en/results#sec-23">                            Other
+                        Monitoring
+</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="nav__item nav__item--has-child">
+                  <a class="nav__link">                  Related Materials
+                  <span class="nav__arrow"></span>
+</a>
+                  <div class="sub-nav">
+                    <div class="sub-nav-container">
+                      <a class="sub-nav__title" href="/en/docs">                      Related
+                  Materials
+</a>
+                      <div class="sub-nav__list-container">
+                        <ul class="sub-nav__list">
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link" href="/en/docs/reps">                            Investigation
+                        and evaluation results
+                        and Reports
+</a>
+                          </li>
+                          <li class="sub-nav__item">
+                            <a class="sub-nav__link" href="/en/docs/rel-info">                            Related
+                        Information
+</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="header__nav-bottom sp-visible">
+            <a class="language-switcher">            Language:
+            <span class="nuxt-icon language-switcher__flag" alt="">            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clip-path="url(#clip0_2399_20954)">
+                <path d="M8 0C12.4183 0 16 3.58171 16 8C16 12.4183 12.4183 16 8 16C3.58171 16 0 12.4183 0 8C0 3.58171 3.58171 0 8 0ZM0.914286 8C0.914286 8.88686 1.08114 9.73257 1.38057 10.5143H3.87657C3.73486 9.72343 3.65714 8.87771 3.65714 8C3.65714 7.12229 3.73486 6.27657 3.87657 5.48571H1.38057C1.08343 6.26743 0.914286 7.11314 0.914286 8ZM1.80571 4.57143H4.07543C4.416 3.25486 4.944 2.13486 5.6 1.33257C3.97943 1.91771 2.63543 3.08114 1.808 4.57143H1.80571ZM7.54286 0.987429C6.89371 1.19086 6.25371 1.81943 5.73257 2.77943C5.44229 3.312 5.20686 3.91771 5.02171 4.57143H7.54286V0.987429ZM4.80914 5.48571C4.656 6.27886 4.57143 7.12457 4.57143 8C4.57143 8.87543 4.656 9.72114 4.80914 10.5143H7.54286V5.48571H4.80914ZM11.4286 8C11.4286 7.12457 11.344 6.27886 11.1909 5.48571H8.45714V10.5143H11.1909C11.344 9.72114 11.4286 8.87543 11.4286 8ZM8.45714 0.987429V4.57143H10.9783C10.7931 3.91771 10.5554 3.312 10.2674 2.77943C9.74629 1.81943 9.10629 1.19086 8.45714 0.987429ZM10.4 1.33257C11.0537 2.13257 11.584 3.25257 11.9246 4.57143H14.1943C13.3669 3.08343 12.0229 1.92 10.4023 1.33257H10.4ZM14.6194 5.48571H12.1234C12.2651 6.27657 12.3429 7.12229 12.3429 8C12.3429 8.87771 12.2651 9.72343 12.1234 10.5143H14.6194C14.9166 9.73257 15.0857 8.88686 15.0857 8C15.0857 7.11314 14.9189 6.26743 14.6194 5.48571ZM14.1943 11.4286H11.9246C11.584 12.7451 11.056 13.8651 10.4 14.6674C12.0206 14.0823 13.3646 12.9189 14.192 11.4286H14.1943ZM10.2674 13.2206C10.5577 12.688 10.7931 12.0823 10.9783 11.4286H8.45714V15.0126C9.10629 14.8091 9.74629 14.1806 10.2674 13.2206ZM7.54286 15.0126V11.4286H5.02171C5.20686 12.0823 5.44457 12.688 5.73257 13.2206C6.25371 14.1806 6.89371 14.8091 7.54286 15.0126ZM5.6 14.6674C4.94629 13.8674 4.416 12.7474 4.07543 11.4286H1.80571C2.63314 12.9166 3.97714 14.08 5.59771 14.6674H5.6Z" fill="#353936">
+                </path>
+              </g>
+              <defs>
+                <clipPath id="clip0_2399_20954">
+                  <rect width="16" height="16" fill="white" transform="matrix(-1 0 0 1 16 0)">
+                  </rect>
+                </clipPath>
+              </defs>
+            </svg>
+</span>
+            Japanese
+</a>
+            <form action="https://www.google.com/search" method="get">
+              <div class="searchform">
+                <input class="searchform__input" name="q" type="text" placeholder="search" />
+                <input type="hidden" name="hl" value="ja" />
+                <input type="hidden" name="gl" value="jp" />
+                <input type="hidden" name="gws_rd" value="cr" />
+                <input type="hidden" name="pws" value="0" />
+                <input type="hidden" name="domains" value="radioactivity.nra.go.jp" />
+                <input type="hidden" name="sitesearch" value="radioactivity.nra.go.jp" />
+                <button class="searchform__btn" type="submit">
+                  <span class="nuxt-icon" alt="search">                  <svg width="21" height="23" viewBox="0 0 21 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.87601 2.93984C5.57114 2.93984 2.97988 5.5033 2.97988 8.5592C2.97988 11.6151 5.57114 14.1786 8.87601 14.1786C12.1809 14.1786 14.7721 11.6151 14.7721 8.5592C14.7721 5.5033 12.1809 2.93984 8.87601 2.93984ZM0.379883 8.5592C0.379883 3.97219 4.23226 0.339844 8.87601 0.339844C13.5198 0.339844 17.3721 3.97219 17.3721 8.5592C17.3721 13.1462 13.5198 16.7786 8.87601 16.7786C4.23226 16.7786 0.379883 13.1462 0.379883 8.5592Z" fill="white">
+                    </path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.4299 13.4095C12.9612 12.9266 13.7834 12.9657 14.2663 13.497L19.8018 19.586C20.2848 20.1173 20.2456 20.9395 19.7144 21.4224C19.1831 21.9054 18.3609 21.8662 17.878 21.335L12.3425 15.2459C11.8595 14.7147 11.8987 13.8925 12.4299 13.4095Z" fill="white">
+                    </path>
+                  </svg>
+</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="db-green-bar">
+        Database-Download by Year
+      </div>
+      <main class="flex-shrink-0">
+        <div class="container-fluid">
+          <!-- <h1 class="h_style1"><i class="fa-solid fa-download me-1"></i>Download by Year</h1> -->
+          <div class="row">
+            <div class="col-md-12 px-3 py-0 ">
+              <p class="d-inline-block">
+                Download measurement data by year. Clicking on a row in the table to select measurement data will display a
+          compressed file of that measurement data.
+          the file size displayed on the screen is the file size before decompression,
+          and the file size after decompression is 10 to 15 times larger than the file size before decompression.
+          for measurement data with more than 1,000,000 data items, the measurement data is divided by each 1,000,000
+          items.
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8 p-3">
+              <h2 class="h_style2">
+                Selection of measurement items
+              </h2>
+              <table id="table1" class="display" style="width:100%;">
+                <thead>
+                  <tr>
+                    <th>
+                    </th>
+                    <th>
+                      content_code
+                    </th>
+                    <th>
+                      class_code
+                    </th>
+                    <th>
+                      item_code
+                    </th>
+                    <th>
+                      Large classification
+                    </th>
+                    <th>
+                      Middle classification
+                    </th>
+                    <th>
+                      Measurement items
+                    </th>
+                    <th>
+                      Count
+                    </th>
+                    <th>
+                      Term start
+                    </th>
+                    <th>
+                      Term end
+                    </th>
+                    <th>
+                      Type
+                    </th>
+                    <th>
+                      Description
+                    </th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>
+                    </th>
+                    <th>
+                      content_code
+                    </th>
+                    <th>
+                      class_code
+                    </th>
+                    <th>
+                      item_code
+                    </th>
+                    <th>
+                      Large classification
+                    </th>
+                    <th>
+                      Middle classification
+                    </th>
+                    <th>
+                      Measurement items
+                    </th>
+                    <th>
+                      Count
+                    </th>
+                    <th>
+                      Term start
+                    </th>
+                    <th>
+                      Term end
+                    </th>
+                    <th>
+                      Type
+                    </th>
+                    <th>
+                      Description
+                    </th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div class="col-md-4 p-3 ">
+              <div class="sticky-top">
+                <h2 class="h_style2">
+                  Download selected measurement items
+                </h2>
+                <div id="label-noselected" class="text-muted">
+                  Selecting a measurement item displays the download file.
+                </div>
+                <div class="download" id="download-selected" style="display: none;">
+                  <h3 id="item_name" class="h_style3">
+                  </h3>
+                  <div class="mt-3">
+                    <h4 class="h_style4">
+                      Character code
+                    </h4>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" id="shift_jis" type="radio" value="0" name="radio_char" checked="" />
+                      <label class="form-check-label" for="shift_jis">
+                        SHIFT-JIS
+                      </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" id="utf_8" type="radio" value="1" name="radio_char" />
+                      <label class="form-check-label" for="utf_8">
+                        UTF-8
+                      </label>
+                    </div>
+                    <div class="mt-3">
+                      <h4 class="h_style4">
+                        Download file
+                      </h4>
+                      <ul id="download-link" class="list-group">
+                      </ul>
+                    </div>
+                    <div class="mt-3">
+                      <h4 class="h_style4">
+                        Description
+                      </h4>
+                      <p id="item_description">
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="footer mt-auto pt-3 text-center border-top">
+        <div class="container">
+          <ul class="list-inline">
+            <li class="list-inline-item">
+              <a class="footer-link" href="https://www.nra.go.jp/english/termofuse.html" target="_blank" rel="noreferrer noopener">              Terms of use
+</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="footer-link" href="/emdb/utilization">              Let’s Get Started
+</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="footer-link" href="/emdb/contact">              FAQ
+</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="footer-link" href="/emdb/terms">              Miscellaneous
+</a>
+            </li>
+          </ul>
+          <div class="small">
+            <div class="footer-contact mb-1">
+              <span class="footer-address">              1-9-9 Roppongi, Minato-ku, Tokyo 106-8450, Japan
+</span>
+              <div class="footer-tel">
+                <div class="tel-line">
+                  <span class="tel-label">                  Phone:
+</span>
+                  <span class="tel-num">                  +81-3-3581-3352
+</span>
+                  <a class="nra-link" href="https://www.nra.go.jp/" target="_blank" rel="noreferrer noopener">                  NRA Japan Nuclear Regulation Authority
+</a>
+                </div>
+              </div>
+            </div>
+            <!-- コピーライト -->
+            <div id="copy-right" class="mb-1">
+              <span>              Copyright © Nuclear Regulation Authority. All Rights Reserved.
+</span>
+            </div>
+            <!-- <div id="funds">
+                <p>
+                    
+                </p> -->
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

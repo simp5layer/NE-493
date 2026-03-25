@@ -9,10 +9,11 @@ A two-stage unsupervised-to-supervised ML pipeline (SOM followed by RF) that dis
 | Phase | Description | Status |
 |-------|-------------|--------|
 | 1. Data Acquisition | Download JAEA EMDB air dose rate datasets | Complete |
-| 2. Data Filtration | Six-stage filter chain (distance, dose, temporal, etc.) | **Current** |
-| 3. SOM Clustering | Train 5x5/6x6 SOM on temporal dose-rate features | Upcoming |
-| 4. RF Classification | Random Forest with SOM cluster labels as targets | Upcoming |
-| 5. SHAP Explainability | Feature importance and regime interpretation | Upcoming |
+| 2. Data Filtration | Six-stage filter chain (distance, dose, temporal, etc.) | Complete |
+| 3. Feature Engineering | Build temporal feature vectors per mesh cell | **Current** |
+| 4. SOM Clustering | Train 5x5/6x6 SOM on temporal dose-rate features | Upcoming |
+| 5. RF Classification | Random Forest with SOM cluster labels as targets | Upcoming |
+| 6. SHAP Explainability | Feature importance and regime interpretation | Upcoming |
 
 ## Phase 1: Data Acquisition Pipeline
 

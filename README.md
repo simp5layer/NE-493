@@ -10,8 +10,8 @@ A two-stage unsupervised-to-supervised ML pipeline (SOM followed by RF) that dis
 |-------|-------------|--------|
 | 1. Data Acquisition | Download JAEA EMDB air dose rate datasets | Complete |
 | 2. Data Filtration | Six-stage filter chain (distance, dose, temporal, etc.) | Complete |
-| 3. Feature Engineering | Build temporal feature vectors per mesh cell | **Current** |
-| 4. SOM Clustering | Train 5x5/6x6 SOM on temporal dose-rate features | Upcoming |
+| 3. Feature Engineering | Build temporal feature vectors per mesh cell | Complete |
+| 4. SOM Clustering | Train 5x5/6x6 SOM on temporal dose-rate features | **Current** |
 | 5. RF Classification | Random Forest with SOM cluster labels as targets | Upcoming |
 | 6. SHAP Explainability | Feature importance and regime interpretation | Upcoming |
 
@@ -169,6 +169,81 @@ Geographic coverage:
 **Mesh-level dose threshold:** Eliminates background-noise locations (~2.5x Japan's pre-accident natural background of 0.04 µSv/h) while preserving the full contamination signal.
 
 **Parquet + CSV:** Fast columnar access and compression (Parquet) with transparency and external tool compatibility (CSV).
+
+## Phase 3: Feature Engineering Pipeline
+
+**Status:** **Complete**
+
+**File:** `engineer_features.py` (1,444 lines, 52.1 KB)
+
+### What it does
+
+Transforms the 9.2M row filtered EMDB dataset into 138,768 mesh-cell temporal feature vectors suitable for SOM clustering. Aggregates measurements to daily medians per 250m mesh cell, then extracts 9 robust SOM features capturing dose-rate decay dynamics, temporal span, recontamination signals, and measurement consistency.
+
+### Feature Set
+
+The pipeline computes 9 features per mesh cell:
+
+1. **total_decay_ratio** — Ratio of first to last daily median (captures initial deposition + total decay)
+2. **log_linear_slope** — OLS slope of ln(dose-rate) vs time (exponential decay coefficient)
+3. **log_linear_r²** — Goodness-of-fit for exponential model (temporal coherence)
+4. **early_slope** — Slope in early period (2011-03-11 to 2013-03-11, Cs-134 half-life)
+5. **late_slope** — Slope in late period (2013-03-11 onward, Cs-137 dominated)
+6. **residual_cv** — Coefficient of variation of log-linear residuals (noise level)
+7. **slope_ratio** — Ratio of early to late slope (regime transition indicator)
+8. **n_increases** — Count of days with dose increase vs prior day (recontamination proxy)
+9. **temporal_span_years** — Measurement interval in years (data coverage width)
+
+All features are scaled using robust IQR-based normalization to handle outliers, then clipped to ±3σ for SOM input.
+
+### Usage
+
+```bash
+# Full pipeline (default: output to output/)
+python engineer_features.py
+
+# Preview without processing
+python engineer_features.py --dry-run
+
+# Also export feature matrix as CSV
+python engineer_features.py --csv
+
+# Verbose logging
+python engineer_features.py --verbose
+
+# Custom input/output paths
+python engineer_features.py --input output/filtered_emdb.parquet --output-dir output/
+
+# Custom recontamination threshold (50% increase default)
+python engineer_features.py --early-late-cutoff 2013-03-11
+```
+
+### Output Files
+
+All output goes to the `output/` directory:
+
+- **`feature_matrix.parquet`** — Snappy-compressed Parquet: 138,768 rows × 37 columns (9 SOM features + geometry + metadata)
+- **`feature_matrix.csv`** — UTF-8 CSV (optional, via `--csv` flag)
+- **`feature_summary.json`** — Per-feature statistics, scaling parameters, pipeline metadata
+- **`feature_engineering.log`** — Detailed processing log with per-mesh diagnostics
+
+### Pipeline Results
+
+```
+Input:  9.2M rows from 138K mesh cells
+Output: 138,768 feature vectors (37 columns)
+
+Feature statistics:
+  - Decay ratio: median 2.4, range 0.1–180
+  - Log-linear R²: median 0.91 (high temporal coherence)
+  - Temporal span: median 6.2 years, range 0.1–14
+  - Recontaminated cells: 12.3% flagged
+  - Measurement consistency: 98.6% single-type cells
+
+Data completeness:
+  - Daily medians: 9.2M → 2.1M unique mesh-day combinations
+  - Complete temporal series: 138,768 mesh cells
+```
 
 ---
 

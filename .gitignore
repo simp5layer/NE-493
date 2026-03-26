@@ -1,11 +1,12 @@
 dataset/
 download_state.json
-download.log
+*.log
 __pycache__/
 *.pyc
 .DS_Store
 venv/
+.venv/
 item_info.json
-filter.log
 output/
 Samples/
+PDFs/

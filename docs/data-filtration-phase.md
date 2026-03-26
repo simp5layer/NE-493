@@ -50,61 +50,7 @@ The Fukushima contamination pattern is **not circular** — it is directional an
 
 ---
 
-## How Key Papers Handled Spatial Extent
-
-### Sun et al. (2022) — RF + Kalman Filter on EMDB Data (Primary Comparator)
-
-- **Source:** Journal of Environmental Radioactivity, 252, 106949
-- **Spatial Extent:** Applied to the Fukushima evacuation zone as of March 2017, with 17 monitoring post locations. The car-survey data underpinning the RF stage covers the 80 km zone, consistent with EMDB acquisition norms.
-- **Key Insight:** Sun et al. do not apply an explicit km cutoff; they implicitly filter to evacuation zone monitoring posts (~20–30 km). For the walk survey, the decision needs to be made explicitly.
-- [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0265931X22001370) | [PubMed](https://pubmed.ncbi.nlm.nih.gov/35752033/)
-
-### Wainwright et al. (2018) — Bayesian Geostatistics
-
-- **Source:** Journal of Environmental Radioactivity, 189, 120–131
-- **Spatial Extent:** Northwestern region of FDNPP approximately within the **80 km radius**. A 2024 follow-up applied to the 80 km radius and the entire Fukushima Prefecture.
-- **Methods:** Bayesian hierarchical model, kriging, multiscale data fusion at 250m–1km grid.
-- [ScienceDirect](https://www.sciencedirect.com/science/article/abs/pii/S0265931X17310032) | [eScholarship](https://escholarship.org/uc/item/5q97c7x5)
-
-### Andoh et al. (2020) — Empirical Decay Rates by Land-Use
-
-- **Source:** Journal of Nuclear Science and Technology, 57(12), 1352–1363
-- **Spatial Extent:** **80 km radius from FDNPP** — explicitly stated in the abstract.
-- **Key Finding:** Ecological half-lives differ significantly by land-use category (urban fastest, forest slowest) and by evacuation area designation. Two-group exponential decay model.
-- **Relevance:** This is the physical motivation for the SOM stage. Their 80 km scope implies the complete behavioral diversity (fast urban decay through slow forest retention) is captured within 80 km.
-- [Tandfonline](https://www.tandfonline.com/doi/full/10.1080/00223131.2020.1789008)
-
-### Andoh et al. (2019) — Walk Survey KURAMA-II
-
-- **Source:** Journal of Environmental Radioactivity
-- **Spatial Extent:** **80 km radius from FDNPP** — explicitly stated. Measured ambient dose rates using KURAMA-II walk surveys from 2013–2016.
-- **Finding:** 38% reduction in dose rate over 42 months beyond physical decay alone, with ecological half-life of 4.1 ± 0.2 years.
-- [PubMed](https://pubmed.ncbi.nlm.nih.gov/29778897/)
-
-### Shuryak (2022) — RF on Biological Contamination
-
-- **Source:** Journal of Environmental Radioactivity, 241, 106772
-- **Spatial Extent:** Plant sampling data from published literature, clustering within 50–80 km of FDNPP.
-- [PubMed](https://pubmed.ncbi.nlm.nih.gov/34768117/)
-
-### Shuryak (2023) — Causal Forests on Trees
-
-- **Source:** Journal of Environmental Radioactivity, 261, 107130
-- **Spatial Extent:** Same sample-based literature compilation. No explicit fixed-radius boundary.
-- [ScienceDirect](https://www.sciencedirect.com/science/article/abs/pii/S0265931X2300098X)
-
-### Yasunari et al. (2011) — Cs-137 Deposition Map (PNAS)
-
-- **Source:** PNAS, 108(49)
-- **Finding:** Deposition above 100,000 MBq/km² around FDNPP, with elevated contamination extending to 80 km NW and secondary contamination in Miyagi, Tochigi, Ibaraki, Saitama, and Chiba at lower levels.
-- **Relevance:** Establishes that scientifically meaningful Cs-137 deposition signal is concentrated within 80 km; beyond this, levels approach or merge with natural geogenic variation.
-- [PNAS](https://www.pnas.org/doi/10.1073/pnas.1112058108)
-
-### Integrated Dose Rate Maps 2011–2022 (Wainwright group / JAEA, 2024)
-
-- **Spatial Extent:** 80 km radius + entire Fukushima Prefecture
-- **Relevance:** Confirms 80 km as the current standard scope as recently as 2024.
-- [PubMed](https://pubmed.ncbi.nlm.nih.gov/39427452/)
+*For detailed literature coverage of how each paper handled spatial extent, see `research-objective.md` (Literature Landscape section). All major studies (Sun, Andoh, Wainwright, Yasunari) use the 80 km boundary.*
 
 ---
 
@@ -166,74 +112,7 @@ The 60–80 km zone has converged much closer to natural background by 2022 (~0.
 
 ---
 
-## Secondary Filters (Beyond Distance)
-
-### Combined Filter Criteria (Recommended Implementation)
-
-```
-Include a location if:
-  Distance from FDNPP <= 80 km
-  AND
-  Initial dose rate (first measurement at that location) >= 0.10 µSv/h
-  AND
-  Number of distinct time points >= 4 (to support temporal feature extraction)
-```
-
-### Filter Rationale
-
-| Filter | Criterion | Rationale |
-|---|---|---|
-| **Distance** | ≤ 80 km | Literature standard; consistent monitoring density |
-| **Dose-rate threshold** | Initial measurement > 0.10 µSv/h | ~2.5x natural background; excludes noise-dominated locations |
-| **Temporal completeness** | ≥ 4 distinct measurement dates per mesh cell | Minimum for temporal feature extraction (decay slopes, half-lives) |
-| **Measurement type** | One type per mesh cell (don't mix Walk + Car) | Different survey geometries produce systematic biases |
-| **Category** | Air dose rate only | Exclude soil, water, vegetation samples |
-| **Detection lower limit** | Exclude records where Value ≤ Detection lower limit | Non-detects require special handling |
-| **Measurement height** | Standard is 100 cm; flag anomalous heights | 1 cm = soil surface, 50 cm = child dose height |
-
-### Sensitivity Analysis
-
-Run the SOM-RF pipeline at two dose-rate thresholds (0.10 and 0.15 µSv/h) to demonstrate conclusions are not threshold-dependent. Optionally run a 30 km subset analysis as well.
-
----
-
-## Column Roles in Filtering
-
-| Column | Filter Role |
-|---|---|
-| **Distance from FDNPP (km)** | Primary hard cutoff: ≤ 80 km |
-| **Value (µSv/h)** | Secondary threshold: initial measurement > 0.10 µSv/h; flag records where Value < Detection lower limit |
-| **Measurement type** | Stratification: separate Walk vs. Car vs. Airborne; do not naively mix |
-| **Category** | Confirm all retained records are air dose rate (not soil, water, vegetation) |
-| **Detection lower limit** | Exclude or flag censored records where Value ≤ Detection lower limit |
-| **Start/Finish date of sampling** | Time-point extraction; calculate temporal span per location; exclude locations with < 4 distinct dates |
-| **Height of Measurement (cm)** | Consistency check: standard is 100 cm; flag anomalous heights |
-| **MeshID_250m** | Location aggregation key for SOM — aggregate multiple measurements within the same 250m mesh to the same time-indexed feature vector |
-| **Latitude / Longitude** | Spatial predictor in RF stage; verify distance calculation |
-| **Prefecture / City** | **NOT** a filter criterion — contamination crosses prefectural lines |
-| **Organization** | Data quality stratification; different organizations used different protocols |
-| **Statistical error** | Data quality weight; high error relative to value should be downweighted |
-| **State of sampling point** | Identifies decontaminated locations — keep but flag as scientifically interesting anomalous regime locations |
-| **Note / Kind of sample** | Check for special conditions (indoors, under canopy, road center vs. roadside) |
-
----
-
-## What to Keep vs. What to Filter Out
-
-### Keep
-
-- All locations within 80 km with dose rates clearly above background (initial > 0.10 µSv/h)
-- All measurement types that are spatially consistent: Walk surveys (CAO), KURAMA car surveys, NRA fixed-point monitors
-- All time periods from first available measurement through latest available (for temporal feature generation)
-- Decontaminated locations — these show artificial dose-rate drops and are scientifically interesting anomalous regime locations
-
-### Filter Out
-
-- Locations beyond 80 km (minimal signal, thin monitoring density)
-- Locations with initial dose rate at or near background (< 0.10 µSv/h)
-- Locations with fewer than 4 distinct measurement dates
-- Measurements where Value is blank or where Detection lower limit exceeds Value (non-detects)
-- Do **not** filter by Prefecture alone — the contamination plume crosses prefecture boundaries
+*For the complete six-stage filter chain specification (criteria, column roles, sensitivity analysis), see `filtration-pipeline-spec.md` in this directory.*
 
 ---
 
@@ -301,19 +180,4 @@ Directly corresponds to the combined evacuation/sheltering zone. Aligns with "ex
 | **Measurement type** | **One type per mesh cell** | Avoids systematic mixing bias |
 | **Do NOT filter by** | Prefecture, City, official zone polygon alone | Contamination is plume-shaped, not administrative-boundary-shaped |
 
----
-
-## Key References
-
-- Andoh et al. (2020) — [Tandfonline](https://www.tandfonline.com/doi/full/10.1080/00223131.2020.1789008)
-- Andoh et al. (2019) — [PubMed](https://pubmed.ncbi.nlm.nih.gov/29778897/)
-- Sun et al. (2022) — [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0265931X22001370) | [PubMed](https://pubmed.ncbi.nlm.nih.gov/35752033/)
-- Wainwright et al. (2018) — [ScienceDirect](https://www.sciencedirect.com/science/article/abs/pii/S0265931X17310032)
-- Wainwright et al. (2024) — [PubMed](https://pubmed.ncbi.nlm.nih.gov/39427452/)
-- Yasunari et al. (2011) — [PNAS](https://www.pnas.org/doi/10.1073/pnas.1112058108)
-- Shuryak (2022) — [PubMed](https://pubmed.ncbi.nlm.nih.gov/34768117/)
-- Shuryak (2023) — [ScienceDirect](https://www.sciencedirect.com/science/article/abs/pii/S0265931X2300098X)
-- Fukushima Evacuation Zones — [Fukushima Portal](https://www.pref.fukushima.lg.jp/site/portal-english/en03-08.html)
-- MOE Evacuation Designations — [env.go.jp](https://www.env.go.jp/en/chemi/rhm/basic-info/1st/09-04-01.html)
-- MEXT Airborne Survey — [NRA](https://radioactivity.nra.go.jp/cont/en/results/land/airborne/survey-results/1270_1216.pdf)
-- Temporal changes summary — [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0265931X18307884)
+*For full reference list with links, see `research-objective.md` (Literature Landscape section).*

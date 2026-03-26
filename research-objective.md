@@ -1,3 +1,9 @@
+<!-- Phase relevance guide:
+     Phase 4 (SOM): "Stage 1 — Unsupervised Discovery" approach section
+     Phase 5 (RF): "Datasets" section (12 predictor profiles), "Stage 2" approach
+     Phase 6 (SHAP): "Expected Results" for interpretation framing
+     Manuscript: "Literature Landscape" for drafting guidance per paper -->
+
 # Research Objective
 
 ## Title

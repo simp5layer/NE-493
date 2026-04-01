@@ -1,11 +1,12 @@
 # Fukushima SOM-RF Pipeline
 
-## Current Phase: 4 — SOM Clustering
+## Current Phase: 5 — RF Classification
 
 ### Active Context
-- `research-objective.md` — SOM approach (Stage 1 section), expected results
-- `output/feature_matrix.parquet` — 138,768 rows x 9 SOM features (IQR-scaled, clipped [-3, 3])
-- `output/feature_summary.json` — Per-feature statistics and scaling parameters
+- `som_clustering.R` — SOM training script and cluster discovery outputs
+- `output/som_clusters.rds` — 6-cluster assignment for 138,768 mesh cells
+- `output/cluster_profiles.csv` — Centroids and statistics for 6 contamination regimes
+- `figures/` — 13 publication-ready manuscript figures
 
 ### Not Needed This Phase
 - `docs/data-filtration-phase.md` — Phase 2 reference
@@ -25,6 +26,8 @@
 | 1. Data Acquisition | Complete |
 | 2. Data Filtration | Complete |
 | 3. Feature Engineering | Complete |
-| 4. SOM Clustering | **Active** |
-| 5. RF Classification | Upcoming |
+| 4. SOM Clustering | Complete |
+| 5. RF Classification | **Active** |
 | 6. SHAP Explainability | Upcoming |
+
+*Note: Phases 5 & 6 may be deferred to second manuscript after Phase 4 publication.*

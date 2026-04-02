@@ -69,4 +69,3 @@ Phase 4 (SOM Clustering) identified 6 distinct contamination decay regimes acros
 - `docs/data-filtration-phase.md` -- 80 km distance cutoff justification and empirical analysis
 - `docs/filtration-pipeline-spec.md` -- Technical specification for the filtration pipeline
 - `docs/feasibility-and-novelty-check.md` -- Novelty assessment and Safecast exclusion rationale
-- `docs/NE493_detailed_report.md` -- Comprehensive project report
